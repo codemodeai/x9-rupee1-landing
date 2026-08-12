@@ -273,14 +273,33 @@ input:focus-visible,select:focus-visible{
 .ticker{
   background:var(--lime);
   border-top:1.5px solid var(--ink);border-bottom:1.5px solid var(--ink);
-  overflow:hidden;padding:11px 0;white-space:nowrap;
+  overflow:hidden;padding:11px 0;
 }
-.ticker-track{display:inline-block;animation:tick 26s linear infinite;will-change:transform}
+/* Two identical groups laid side by side at their natural width, so shifting
+   the track by exactly -50% arrives at a pixel-identical frame — the loop has
+   no seam and no gap. Duration is set by main.js from the group width, keeping
+   the speed constant however many items there are. */
+.ticker-track{
+  display:flex;
+  width:max-content;
+}
+/* Only scroll once main.js has built the second group. Animating a single group
+   would shift by half of one copy and expose a gap — so no JS means a static
+   strip, which is correct rather than broken. */
+.ticker-track.is-running{
+  animation:tick var(--marquee-duration,26s) linear infinite;
+  will-change:transform;
+}
+.ticker-group{display:flex;flex:0 0 auto}
 .ticker span{
   font-family:var(--font-serif);font-weight:600;font-size:15px;
-  letter-spacing:.06em;margin-right:34px;
+  letter-spacing:.06em;margin-right:34px;white-space:nowrap;
 }
 @keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* WCAG 2.2.2: give people a way to stop moving content. */
+.ticker:hover .ticker-track.is-running,
+.ticker:focus-within .ticker-track.is-running{animation-play-state:paused}
 
 /* 9. PAIN ----------------------------------------------------------------- */
 .pain-quote{

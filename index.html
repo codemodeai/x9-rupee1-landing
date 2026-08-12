@@ -111,8 +111,15 @@
 
   <!-- TICKER -->
   <div class="ticker" aria-hidden="true">
-    <!-- The strip is duplicated so the -50% translate loops seamlessly. -->
-    <div class="ticker-track"><span>₹1</span><span>NOT A JOKE</span><span>LIVE IN 1 DAY</span><span>NO TEMPLATES</span><span>THE CATCH IS PUBLIC</span><span>₹1</span><span>NOT A JOKE</span><span>LIVE IN 1 DAY</span><span>NO TEMPLATES</span><span>THE CATCH IS PUBLIC</span></div>
+    <!--
+      One group of items. main.js repeats them until the group is wider than the
+      viewport, then clones the group once so the -50% translate lands exactly on
+      the repeat and the loop never shows a seam. Without JS the group still
+      renders and the strip simply doesn't scroll.
+    -->
+    <div class="ticker-track" id="tickerTrack">
+      <div class="ticker-group"><span>₹1</span><span>NOT A JOKE</span><span>LIVE IN 1 DAY</span><span>NO TEMPLATES</span><span>THE CATCH IS PUBLIC</span></div>
+    </div>
   </div>
 
   <!-- PAIN — their words, not ours -->

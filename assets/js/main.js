@@ -109,6 +109,66 @@
     revealTargets.forEach(function (el) { obs.observe(el); });
   }
 
+  /* --- Marquee: seamless, gap-free at any width ------------------------- */
+  // Two identical groups + a -50% translate gives a loop with no visible seam,
+  // but only if one group is wider than the viewport. Hardcoding a couple of
+  // copies leaves dead space on wide monitors, so the group is filled to fit.
+  var MARQUEE_SPEED = 70;   // px per second, independent of content length
+
+  function buildMarquee(track) {
+    var group = $('.ticker-group', track);
+    if (!group) return;
+
+    // Remember the authored items once; every rebuild starts from these.
+    if (!track._items) {
+      track._items = Array.prototype.map.call(group.children, function (node) {
+        return node.cloneNode(true);
+      });
+    }
+    var items = track._items;
+    if (!items.length) return;
+
+    // Reset to a single copy of the authored items.
+    group.textContent = '';
+    items.forEach(function (node) { group.appendChild(node.cloneNode(true)); });
+
+    // Repeat until the group alone covers the viewport (guard against a
+    // zero-width measurement looping forever, e.g. if fonts haven't loaded).
+    var guard = 0;
+    while (group.scrollWidth > 0 && group.scrollWidth < window.innerWidth && guard < 40) {
+      items.forEach(function (node) { group.appendChild(node.cloneNode(true)); });
+      guard += 1;
+    }
+
+    // Exactly two groups — drop any clone from a previous build first.
+    while (track.children.length > 1) track.removeChild(track.lastChild);
+    track.appendChild(group.cloneNode(true));
+
+    track.style.setProperty('--marquee-duration', (group.scrollWidth / MARQUEE_SPEED) + 's');
+    track.classList.add('is-running');   // safe to animate now: two groups exist
+  }
+
+  var ticker = $('#tickerTrack');
+  if (ticker) {
+    buildMarquee(ticker);
+
+    // Web fonts change the text width, which changes the repeat point.
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(function () { buildMarquee(ticker); });
+    }
+
+    // Only rebuild when the width actually changes — mobile browsers fire
+    // resize on scroll as the address bar collapses.
+    var lastWidth = window.innerWidth;
+    var resizeTimer = null;
+    window.addEventListener('resize', function () {
+      if (window.innerWidth === lastWidth) return;
+      lastWidth = window.innerWidth;
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(function () { buildMarquee(ticker); }, 200);
+    });
+  }
+
   /* --- Hero highlight sweep (it sits outside any .rv container) --------- */
   var heroHl = $('#heroHl');
   if (heroHl) {
