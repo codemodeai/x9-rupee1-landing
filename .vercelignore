@@ -1,0 +1,15 @@
+# Local tooling and docs — these would otherwise be public URLs on the deploy.
+README.md
+serve.ps1
+dev-server.py
+
+# The Apps Script source lives in Google, not on the website.
+google-apps-script.gs
+
+# Superseded single-file draft, kept locally for reference only.
+archive/
+
+# Junk
+.DS_Store
+Thumbs.db
+*.log

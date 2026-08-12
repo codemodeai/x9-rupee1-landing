@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en-IN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>A website at ₹1. Not a joke. — X9 CREATIVES</title>
+<meta name="description" content="A complete 3-page website for ₹1 — built from the design you show us, live in 1 day. Full first-year cost ₹2,501 including domain &amp; hosting. The catch is public.">
+<meta name="author" content="X9 CREATIVES">
+<meta name="theme-color" content="#F4F2EA">
+<meta name="robots" content="index,follow">
+
+<!-- Canonical + social. Live domain: details.x9creatives.in
+     If this ever moves, the domain also appears in sitemap.xml and robots.txt. -->
+<link rel="canonical" href="https://details.x9creatives.in/">
+<meta property="og:site_name" content="X9 CREATIVES">
+<meta property="og:title" content="A website. The price of a chocolate.">
+<meta property="og:description" content="A complete website for ₹1. Live in 1 day. Not a joke — the catch is public.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://details.x9creatives.in/">
+<meta property="og:locale" content="en_IN">
+<meta property="og:image" content="https://details.x9creatives.in/assets/img/og-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A website. The price of a chocolate. ₹1 — X9 CREATIVES.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="A website. The price of a chocolate.">
+<meta name="twitter:description" content="A complete website for ₹1. Live in 1 day. Not a joke — the catch is public.">
+<meta name="twitter:image" content="https://details.x9creatives.in/assets/img/og-cover.png">
+
+<link rel="icon" href="assets/img/x9-logo.png" sizes="512x512" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/x9-logo.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,400&amp;family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="assets/css/styles.css">
+
+<!-- Animations are JS/CSS driven; without JS the content must still be visible. -->
+<noscript><style>
+  .rv,[data-stagger] > *{opacity:1!important;transform:none!important}
+  .hl{background-size:100% 100%!important}
+</style></noscript>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!-- Scroll progress -->
+<div class="progress" aria-hidden="true"><i id="progressBar"></i></div>
+
+<!-- STICKY NAV — logo + CTA, always visible -->
+<header class="site-nav" id="siteNav">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="X9 CREATIVES — home">
+      <img class="brand-mark" src="assets/img/x9-logo.png" width="512" height="512"
+           alt="" fetchpriority="high" decoding="async">
+      <span class="brand-text">
+        <span class="brand-name">X9 <em>CREATIVES</em></span>
+        <span class="brand-tag">Strategy · Creative · Growth</span>
+      </span>
+    </a>
+    <a class="nav-cta" href="#claim">Claim your slot <span class="chip">₹1</span></a>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- HERO — copy left, offer right -->
+  <section class="hero" id="top" aria-labelledby="hero-title">
+    <div class="wrap">
+      <div class="hero-grid">
+
+        <!-- Three grid children, not two: the title is separate so the offer
+             card can sit between it and the supporting copy on mobile. -->
+        <div class="hero-head">
+          <h1 id="hero-title">
+            <span class="line"><span>A website.</span></span>
+            <span class="line"><span>The price of</span></span>
+            <span class="line"><span><span class="hl" id="heroHl">a chocolate.</span></span></span>
+          </h1>
+        </div>
+
+        <div class="hero-body">
+          <p class="sub">Three pages, built from the design you show us — live in one day. You pay one rupee for the build.</p>
+          <ul class="hero-points">
+            <li>Live in 1 day</li>
+            <li>Your design, not a template</li>
+            <li>You own everything</li>
+          </ul>
+          <p class="whisper-hero">Not a joke. The catch is public — it's right below ↓</p>
+        </div>
+
+        <div class="offer-wrap">
+          <div class="offer-card">
+            <span class="offer-ribbon">Not a joke</span>
+            <p class="offer-label">One-time build fee</p>
+            <div class="offer-price-row">
+              <p class="offer-price">₹1</p>
+              <p class="offer-mrp"><b>MRP ₹1.00</b>incl. of all taxes, design &amp; one dead excuse.</p>
+            </div>
+            <a class="offer-cta" href="#claim">Claim your slot <span class="chip">1-min form</span></a>
+            <p class="offer-fine">No payment now. The ₹1 happens on the call.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- TICKER -->
+  <div class="ticker" aria-hidden="true">
+    <!-- The strip is duplicated so the -50% translate loops seamlessly. -->
+    <div class="ticker-track"><span>₹1</span><span>NOT A JOKE</span><span>LIVE IN 1 DAY</span><span>NO TEMPLATES</span><span>THE CATCH IS PUBLIC</span><span>₹1</span><span>NOT A JOKE</span><span>LIVE IN 1 DAY</span><span>NO TEMPLATES</span><span>THE CATCH IS PUBLIC</span></div>
+  </div>
+
+  <!-- PAIN — their words, not ours -->
+  <section class="pain" aria-labelledby="pain-title">
+    <div class="wrap narrow rv">
+      <p class="eyebrow">Be honest</p>
+      <h2 id="pain-title">Sound familiar?</h2>
+      <div data-stagger>
+        <p class="pain-quote">"A website? I'll do it later."<small>— you. For the last two years.</small></p>
+        <p class="pain-quote">"The quote said ₹30,000. I closed the chat."<small>— and posted one more story instead.</small></p>
+        <p class="pain-quote">"Send me your website link?" …and you sent your Instagram.<small>— again.</small></p>
+        <p class="pain-quote">Someone searched for what you sell last night. Your competitor showed up. You didn't.<small>— this one isn't a quote. It's just true.</small></p>
+      </div>
+      <p class="turn">We can't fix your excuses. So we removed them: <span class="hl">₹1.</span></p>
+    </div>
+  </section>
+
+  <!-- THE CATCH — the biggest objection, answered head-on -->
+  <section class="catch" aria-labelledby="catch-title">
+    <div class="wrap narrow rv">
+      <p class="eyebrow">"Too good to be true" — let's check</p>
+      <h2 id="catch-title">The whole catch, upfront</h2>
+      <div data-stagger>
+        <div class="catch-item">
+          <h3>1. ₹1 is the build. ₹2,500 is your domain &amp; hosting.</h3>
+          <p>One year of domain + hosting, ₹2,500 — we buy it, set it up, and put your site live for you. So the real total is <b>₹2,501 for the first year</b>. There. Now you know the full number before anyone asks for it.</p>
+        </div>
+        <div class="catch-item">
+          <h3>2. It's 3 pages</h3>
+          <p>Home. About / Services. Contact. Built properly. Need a bigger site? That's a normal project — this offer is the small one.</p>
+        </div>
+        <div class="catch-item">
+          <h3>3. If you love it, say it</h3>
+          <p>Post it. Tag us. Tell one friend. We're a new studio — proof is how we grow. That's the real payment.</p>
+        </div>
+      </div>
+      <p><span class="stamp">No hidden fee. Next year: same ₹2,500 renewal. Nothing else.</span></p>
+    </div>
+  </section>
+
+  <!-- PROOF — no borrowed credibility, just the honest position -->
+  <section class="proof" aria-labelledby="proof-title">
+    <div class="wrap narrow rv" data-anim="zoom">
+      <h2 class="visually-hidden" id="proof-title">Where we stand today</h2>
+      <div class="proof-box">
+        <p class="honest">What we're not going to do</p>
+        <p>Show you stock photos of "happy clients" or reviews nobody wrote. We're a new studio. The work is the only argument we have.</p>
+        <p>So the deal is simple: your rupee, our day, your site. If it's good, you'll say so on your own. If it isn't, you're out one rupee and a coffee's worth of time.</p>
+      </div>
+      <p class="ig-note">Every ₹1 site we ship goes up on our <a data-instagram href="https://instagram.com/x9creatives" rel="noopener" target="_blank">Instagram</a> — watch the list grow in real time before you decide.</p>
+    </div>
+  </section>
+
+  <!-- WHAT YOU GET -->
+  <section class="get" aria-labelledby="get-title">
+    <div class="wrap narrow rv">
+      <p class="eyebrow">For your ₹1</p>
+      <h2 id="get-title">What you get</h2>
+      <ul data-stagger>
+        <li><b>Your design, not a template</b> — send a reference site or style you like, we build on it</li>
+        <li><b>Live in 1 day</b> — from the moment your content is locked</li>
+        <li><b>Domain + hosting + go-live, done for you</b> — covered by the ₹2,500/yr, domain registered in your name</li>
+        <li><b>Full website files</b> — yours to keep, forever</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how" aria-labelledby="how-title">
+    <div class="wrap narrow rv">
+      <p class="eyebrow">Simple process</p>
+      <h2 id="how-title">How it works</h2>
+      <div data-stagger>
+        <div class="step">
+          <p class="n serif" aria-hidden="true">1</p>
+          <div><h3>Fill the form</h3><p>One minute, six answers — right on this page. No payment now.</p></div>
+        </div>
+        <div class="step">
+          <p class="n serif" aria-hidden="true">2</p>
+          <div><h3>10-minute call</h3><p>We explain everything, answer everything. There's a small bonus we only share on the call.</p></div>
+        </div>
+        <div class="step">
+          <p class="n serif" aria-hidden="true">3</p>
+          <div><h3>Lock your content, pay up</h3><p>A short meet — we fix your text, photos and reference together. ₹1 for the build, ₹2,500 for your year of domain &amp; hosting. Keep the ₹1 receipt — it's a fun one.</p></div>
+        </div>
+        <div class="step">
+          <p class="n serif" aria-hidden="true">4</p>
+          <div><h3>Live the next day</h3><p>Your site — live on your own domain. Files in your WhatsApp, yours forever.</p></div>
+        </div>
+      </div>
+      <p class="oneday serif">Slot to site: <span class="hl">one day.</span></p>
+    </div>
+  </section>
+
+  <!-- GROWTH SITE -->
+  <section class="growth" aria-labelledby="growth-title">
+    <div class="wrap narrow rv">
+      <p class="eyebrow">When you're ready</p>
+      <h2 id="growth-title">The ₹1 site makes you visible.<br>The Growth Site makes you <span class="hl money">money.</span></h2>
+      <p class="gprice">₹10–20K<small>exact quote after one call — depends on what your business needs</small></p>
+      <ul data-stagger>
+        <li><b>5–8 pages</b> — built around how your customers actually buy</li>
+        <li><b>WhatsApp enquiry buttons</b> on every page — visitors become chats</li>
+        <li><b>Google Maps + Google Business setup</b> — built to be found, not just to exist</li>
+        <li><b>Your own panel</b> — change prices, photos and offers yourself, anytime, in seconds</li>
+        <li><b>Hosted &amp; maintained by us</b> — you run the business, we run the site</li>
+      </ul>
+      <p class="gecom">Selling products online? E-commerce stores from ₹30K.</p>
+      <a class="gcta" href="#claim">Ask about it on the call →</a>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq" aria-labelledby="faq-title">
+    <div class="wrap narrow rv">
+      <p class="eyebrow">Ask before you pay your rupee</p>
+      <h2 id="faq-title">Questions everyone asks</h2>
+      <div data-stagger>
+        <details>
+          <summary>Is this a scam?</summary>
+          <p>Correct instinct — check the numbers. The full first-year cost is ₹2,501: ₹1 for the build, ₹2,500 for your domain and hosting. It's written on this page, on the ad, and we'll say it again on the call. Your domain is registered in your name and you keep the files — so nothing of yours can ever be held.</p>
+        </details>
+        <details>
+          <summary>Why ₹1? What do you get?</summary>
+          <p>We're a new studio. Nobody trusts a new name, and we'd rather prove than promise. We get a portfolio piece and, if you love the work, your word to others. That's worth more to us right now than your money.</p>
+        </details>
+        <details>
+          <summary>So what do I really spend in total?</summary>
+          <p>₹2,501 for the first year. From next year, only the ₹2,500 domain &amp; hosting renewal. That's the full amount. There is nothing else.</p>
+        </details>
+        <details>
+          <summary>Who owns the website?</summary>
+          <p>You. Domain in your name, files in your hands. If you ever want to walk away and host it elsewhere — you can, freely.</p>
+        </details>
+        <details>
+          <summary>Can I ask for changes after delivery?</summary>
+          <p>The ₹1 site is built once, from the content we lock together on the call — that's how it stays ₹1 and ships in a day. So come with your content final. Changes after delivery are paid, small and fixed-price.</p>
+        </details>
+        <details>
+          <summary>I need more than 3 pages.</summary>
+          <p>Then you want the Growth Site — 5–8 pages, WhatsApp buttons, Google setup, and a panel where you change prices and photos yourself, anytime. Ask about it on the call, or start at ₹1 and grow later. Most people do exactly that.</p>
+        </details>
+        <details>
+          <summary>Who is this NOT for?</summary>
+          <p>People with no content and no time to gather it, and people hunting for free work. If you're serious about your business, you're exactly who this is for.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA + FORM — the offer, repeated -->
+  <section class="last form-sec" id="claim" aria-labelledby="claim-title">
+    <div class="wrap narrow">
+      <p class="slots">Batch 1 · <i>limited slots</i> · first come, first built</p>
+      <p class="remind serif">₹1. Live in one day. The catch you already know.</p>
+      <h2 id="claim-title">Claim your slot</h2>
+      <p class="lead">One minute, six answers. If it fits, we'll message you a call slot on the number you give us — everything gets explained before you pay a single rupee.</p>
+
+      <!-- With JS, the form and success panel are moved into #claimModal and this
+           host gets an "open the form" button instead. Without JS they stay here
+           and work inline. -->
+      <div id="claimFormHost">
+        <form id="claimForm" novalidate autocomplete="on">
+          <div class="field">
+            <label for="f-name">Your name</label>
+            <input id="f-name" name="name" type="text" required
+                   autocomplete="name" autocapitalize="words" enterkeyhint="next">
+            <p class="err" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="f-biz">Business name</label>
+            <input id="f-biz" name="business" type="text" required
+                   autocomplete="organization" autocapitalize="words" enterkeyhint="next">
+            <p class="err" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="f-what">What do you sell or do?</label>
+            <input id="f-what" name="what" type="text" required
+                   placeholder="e.g. bakery, salon, tuition, interior work"
+                   autocomplete="off" enterkeyhint="next">
+            <p class="err" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="f-phone">WhatsApp number</label>
+            <input id="f-phone" name="phone" type="tel" inputmode="tel" required
+                   placeholder="10-digit number" autocomplete="tel-national" enterkeyhint="done">
+            <p class="hint">Indian mobile. +91 or 0 in front is fine — we'll clean it up.</p>
+            <p class="err" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="f-content">Is your content ready? (logo, photos, text)</label>
+            <select id="f-content" name="content" required autocomplete="off">
+              <option value="" disabled selected>Choose one</option>
+              <option>Yes, all ready</option>
+              <option>Half ready</option>
+              <option>Not yet</option>
+            </select>
+            <p class="err" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="f-paid">Have you ever paid for marketing before? (ads, designer, agency)</label>
+            <select id="f-paid" name="paid" required autocomplete="off">
+              <option value="" disabled selected>Choose one</option>
+              <option>Yes</option>
+              <option>No</option>
+            </select>
+            <p class="err" role="alert"></p>
+          </div>
+          <button class="form-btn" type="submit">Claim my slot →</button>
+          <p class="form-note">Your answers come straight to us — that's your slot request in. No payment now. The ₹1 happens only on the call, after everything is explained.</p>
+        </form>
+      </div>
+
+      <p class="whisper-hero">Not serious? No problem. Enjoy the chocolate. 🍫</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div>Built by <b>X9 CREATIVES</b> · <span id="year">2026</span></div>
+    <div>₹1 offer · terms as written above</div>
+  </div>
+</footer>
+
+<!-- Mobile sticky CTA — appears once the hero card scrolls away -->
+<div class="mobile-cta" id="mobileCta">
+  <a href="#claim">Claim your slot <span class="chip">₹1</span></a>
+</div>
+
+<!-- CLAIM MODAL — the form is moved in here by main.js on load -->
+<dialog class="modal" id="claimModal" aria-labelledby="modalTitle">
+  <div class="modal-head">
+    <div>
+      <p class="modal-eyebrow">Batch 1 · limited slots</p>
+      <h2 class="modal-title" id="modalTitle">Claim your ₹1 slot</h2>
+      <p class="modal-sub">One minute, six answers. No payment now.</p>
+    </div>
+    <button class="modal-close" type="button" id="modalClose" aria-label="Close the form">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <div class="modal-body" id="modalBody"></div>
+</dialog>
+
+<!-- Structured data: the offer -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": "₹1 Website — 3-page business website",
+  "serviceType": "Website design and development",
+  "provider": {
+    "@type": "Organization",
+    "name": "X9 CREATIVES",
+    "url": "https://details.x9creatives.in/",
+    "logo": "https://details.x9creatives.in/assets/img/x9-logo.png"
+  },
+  "areaServed": { "@type": "Country", "name": "India" },
+  "description": "A complete 3-page website built from your reference design, live in one day. ₹1 for the build plus ₹2,500 per year for domain and hosting.",
+  "offers": {
+    "@type": "Offer",
+    "price": "1",
+    "priceCurrency": "INR",
+    "description": "₹1 for the website build. Domain and hosting ₹2,500 per year, billed separately. Full first-year cost ₹2,501.",
+    "availability": "https://schema.org/LimitedAvailability"
+  }
+}
+</script>
+
+<!-- Structured data: FAQ (mirrors the FAQ section above — keep both in sync) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is this a scam?",
+      "acceptedAnswer": { "@type": "Answer", "text": "The full first-year cost is ₹2,501: ₹1 for the build, ₹2,500 for your domain and hosting. Your domain is registered in your name and you keep the files." }
+    },
+    {
+      "@type": "Question",
+      "name": "Why ₹1? What do you get?",
+      "acceptedAnswer": { "@type": "Answer", "text": "We're a new studio and we'd rather prove than promise. We get a portfolio piece and, if you love the work, your word to others." }
+    },
+    {
+      "@type": "Question",
+      "name": "So what do I really spend in total?",
+      "acceptedAnswer": { "@type": "Answer", "text": "₹2,501 for the first year. From next year, only the ₹2,500 domain and hosting renewal." }
+    },
+    {
+      "@type": "Question",
+      "name": "Who owns the website?",
+      "acceptedAnswer": { "@type": "Answer", "text": "You do. Domain in your name, files in your hands. You can host it elsewhere any time." }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I ask for changes after delivery?",
+      "acceptedAnswer": { "@type": "Answer", "text": "The ₹1 site is built once from the content locked on the call. Changes after delivery are paid, small and fixed-price." }
+    },
+    {
+      "@type": "Question",
+      "name": "I need more than 3 pages.",
+      "acceptedAnswer": { "@type": "Answer", "text": "That's the Growth Site — 5 to 8 pages, WhatsApp buttons, Google setup and a self-serve panel, ₹10,000 to ₹20,000." }
+    },
+    {
+      "@type": "Question",
+      "name": "Who is this NOT for?",
+      "acceptedAnswer": { "@type": "Answer", "text": "People with no content and no time to gather it, and people hunting for free work." }
+    }
+  ]
+}
+</script>
+
+<script src="assets/js/main.js" defer></script>
+</body>
+</html>

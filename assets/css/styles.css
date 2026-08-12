@@ -1,0 +1,744 @@
+/* ==========================================================================
+   X9 CREATIVES — ₹1 Website Landing Page
+   --------------------------------------------------------------------------
+   1.  Tokens
+   2.  Reset & base
+   3.  Layout helpers
+   4.  Accessibility
+   5.  Scroll progress
+   6.  Nav (logo + CTA)
+   7.  Hero (2-column: copy left, offer card right)
+   8.  Ticker
+   9.  Pain
+   10. Catch
+   11. Proof / honesty
+   12. What you get + How it works
+   13. Growth site
+   14. FAQ
+   15. Claim form
+   16. Mobile sticky CTA
+   17. Footer
+   18. Animation system
+   19. Responsive
+   ========================================================================== */
+
+/* 1. TOKENS ---------------------------------------------------------------- */
+:root{
+  --ink:#111110;
+  --paper:#F4F2EA;
+  --lime:#CDF463;
+  --lime-hot:#C9FF2E;          /* from the logo mark */
+  --dim:#6b6a63;
+  --body:#3a3934;
+  --body-strong:#26251f;
+  --rule:#11111022;
+  --white:#fff;
+  --danger:#a3231b;
+
+  --font-sans:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --font-serif:'Fraunces',Georgia,'Times New Roman',serif;
+
+  --wrap:1140px;               /* nav, hero, footer */
+  --measure:720px;             /* reading column for body sections */
+  --gutter:24px;
+  --section-y:clamp(58px,7vw,88px);
+  --radius:2px;
+  --nav-h:70px;
+
+  --ease:cubic-bezier(.22,1,.36,1);
+  --ease-out:cubic-bezier(.16,1,.3,1);
+}
+
+/* 2. RESET & BASE --------------------------------------------------------- */
+*{margin:0;padding:0;box-sizing:border-box}
+/* An author `display` rule beats the UA's display:none for [hidden], which
+   silently reveals elements the JS meant to hide. Make hidden win. */
+[hidden]{display:none!important}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--font-sans);
+  font-size:16px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+}
+img,svg{max-width:100%;height:auto;display:block}
+a{color:inherit}
+
+/* 3. LAYOUT HELPERS ------------------------------------------------------- */
+.serif{font-family:var(--font-serif)}
+.wrap{width:100%;max-width:var(--wrap);margin:0 auto;padding:0 var(--gutter)}
+/* Body sections keep a 720px reading measure but stay on the same left grid
+   line as the nav and hero, so the page reads as one layout. */
+.wrap.narrow > *{max-width:var(--measure)}
+section{padding:var(--section-y) 0;scroll-margin-top:calc(var(--nav-h) + 12px)}
+.eyebrow{
+  font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+  font-weight:600;color:var(--dim);margin-bottom:14px;
+}
+h2{
+  font-family:var(--font-serif);font-weight:400;
+  font-size:clamp(28px,5.2vw,42px);line-height:1.08;
+  margin-bottom:26px;letter-spacing:-.008em;
+}
+
+/* Lime marker that sweeps in when its section is revealed. */
+.hl{
+  background-image:linear-gradient(var(--lime),var(--lime));
+  background-repeat:no-repeat;
+  background-size:0 100%;
+  background-position:0 50%;
+  padding:0 .16em;
+  -webkit-box-decoration-break:clone;
+  box-decoration-break:clone;
+  transition:background-size .8s var(--ease) .18s;
+}
+.rv.in .hl,.hl.lit{background-size:100% 100%}
+
+/* 4. ACCESSIBILITY -------------------------------------------------------- */
+.skip-link{
+  position:absolute;left:var(--gutter);top:-100px;z-index:100;
+  background:var(--ink);color:var(--paper);font-weight:600;font-size:14px;
+  padding:12px 18px;border-radius:var(--radius);text-decoration:none;
+  transition:top .18s ease;
+}
+.skip-link:focus{top:12px}
+.visually-hidden{
+  position:absolute;width:1px;height:1px;margin:-1px;padding:0;
+  overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;
+}
+a:focus-visible,summary:focus-visible,button:focus-visible,
+input:focus-visible,select:focus-visible{
+  outline:3px solid var(--ink);outline-offset:3px;
+}
+.growth a:focus-visible{outline-color:var(--lime)}
+
+/* 5. SCROLL PROGRESS ------------------------------------------------------ */
+.progress{
+  position:fixed;top:0;left:0;right:0;height:3px;z-index:90;
+  background:transparent;pointer-events:none;
+}
+.progress i{
+  display:block;height:100%;width:0;
+  background:var(--lime-hot);
+  border-right:1px solid var(--ink);
+  transition:width .1s linear;
+}
+
+/* 6. NAV ------------------------------------------------------------------ */
+.site-nav{
+  position:sticky;top:0;z-index:60;
+  background:var(--paper);
+  border-bottom:1px solid var(--rule);
+  padding:12px 0;
+  transition:padding .28s var(--ease),box-shadow .28s ease,background-color .28s ease;
+}
+.site-nav.scrolled{
+  padding:8px 0;
+  background:#F4F2EAF2;
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  box-shadow:0 10px 30px -18px #11111066;
+}
+.site-nav .wrap{display:flex;justify-content:space-between;align-items:center;gap:14px}
+
+.brand{display:flex;align-items:center;gap:11px;text-decoration:none;min-width:0}
+.brand-mark{
+  width:42px;height:42px;flex:0 0 auto;border-radius:50%;
+  transition:transform .55s var(--ease);
+}
+.site-nav.scrolled .brand-mark{width:36px;height:36px}
+.brand:hover .brand-mark{transform:rotate(-10deg) scale(1.06)}
+.brand-text{display:flex;flex-direction:column;min-width:0}
+.brand-name{
+  font-family:var(--font-serif);font-weight:600;font-size:18px;
+  line-height:1.05;letter-spacing:-.01em;white-space:nowrap;
+}
+.brand-name em{font-style:normal;background:var(--lime);padding:0 5px}
+.brand-tag{
+  font-size:9px;letter-spacing:.19em;text-transform:uppercase;
+  font-weight:600;color:var(--dim);margin-top:3px;white-space:nowrap;
+}
+
+.nav-cta{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--ink);color:var(--paper);text-decoration:none;
+  font-weight:600;font-size:14px;letter-spacing:.005em;
+  padding:13px 20px;border-radius:var(--radius);white-space:nowrap;
+  box-shadow:3px 3px 0 var(--lime);
+  transition:transform .18s var(--ease),box-shadow .18s var(--ease);
+}
+.nav-cta .chip{background:var(--lime);color:var(--ink);padding:1px 7px;font-weight:700}
+.nav-cta:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 var(--lime)}
+.nav-cta:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--lime)}
+
+/* 7. HERO ----------------------------------------------------------------- */
+.hero{padding:clamp(44px,6vw,84px) 0 clamp(52px,6.5vw,84px);overflow:visible}
+/* Named areas so the card can be repositioned per breakpoint without touching
+   the markup order. Desktop: title and copy stack in column 1, card spans both
+   rows in column 2. */
+.hero-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);
+  grid-template-areas:
+    "head card"
+    "body card";
+  column-gap:clamp(34px,4.6vw,66px);
+  row-gap:24px;
+  align-items:start;
+}
+.hero-head{grid-area:head;min-width:0}
+.hero-body{grid-area:body;min-width:0}
+.offer-wrap{grid-area:card;align-self:center}
+
+.hero h1{
+  font-family:var(--font-serif);font-weight:400;
+  font-size:clamp(40px,6.4vw,80px);
+  line-height:1.01;letter-spacing:-.018em;
+  margin-bottom:0;          /* row-gap handles the spacing */
+}
+/* .line clips, the direct child slides up inside it, .hl stays inline so the
+   lime marker hugs the words instead of filling the column. */
+.hero h1 .line{display:block;overflow:hidden;padding-bottom:.05em}
+.hero h1 .line > span{display:block;font-style:normal}
+.hero h1 .hl{display:inline}
+.hero .sub{font-size:clamp(16.5px,1.6vw,19.5px);color:var(--body-strong);max-width:44ch}
+
+.hero-points{list-style:none;margin-top:26px;display:flex;flex-wrap:wrap;gap:10px 22px}
+.hero-points li{
+  display:flex;align-items:center;gap:9px;
+  font-size:14.5px;font-weight:500;color:var(--body);
+}
+.hero-points li::before{
+  content:"";width:9px;height:9px;flex:0 0 auto;
+  background:var(--lime);border:1px solid var(--ink);
+}
+.hero .whisper-hero{font-size:13.5px;color:var(--dim);margin-top:24px}
+
+/* --- right: offer card --- */
+.offer-wrap{min-width:0;display:flex;justify-content:flex-end}
+.offer-card{
+  position:relative;width:100%;max-width:430px;
+  background:var(--white);border:1.6px solid var(--ink);
+  padding:clamp(24px,2.6vw,34px) clamp(20px,2.3vw,30px) clamp(22px,2.4vw,30px);
+  box-shadow:10px 10px 0 var(--ink);
+}
+.offer-ribbon{
+  position:absolute;top:-15px;right:-12px;
+  background:var(--lime);border:1.5px solid var(--ink);
+  font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  padding:6px 11px;transform:rotate(3deg);
+}
+.offer-label{
+  font-size:11.5px;letter-spacing:.17em;text-transform:uppercase;
+  font-weight:600;color:var(--dim);
+}
+.offer-price-row{display:flex;align-items:flex-end;gap:14px;margin:8px 0 4px;flex-wrap:wrap}
+/* Deliberately sans, not the display serif: Fraunces is high-contrast, so its
+   rupee crossbars render as hairlines at any weight and the figure reads faint.
+   Inter 800 gives ₹ and 1 an even, unmistakably bold stroke. */
+.offer-price{
+  font-family:var(--font-sans);font-weight:800;
+  font-size:clamp(80px,8.6vw,128px);line-height:.86;letter-spacing:-.045em;
+}
+.offer-mrp{
+  /* --tilt drives both the static rule and the mrpIn keyframe, so a breakpoint
+     can straighten the tag by changing one value. */
+  --tilt:-3deg;
+  transform:rotate(var(--tilt));border:1.5px dashed var(--ink);
+  padding:9px 12px;font-size:12px;line-height:1.45;max-width:190px;
+  background:var(--paper);font-weight:500;font-family:var(--font-serif);
+  margin-bottom:8px;
+}
+.offer-mrp b{display:block;font-size:12.5px;letter-spacing:.05em}
+
+.offer-cta{
+  margin-top:24px;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  width:100%;background:var(--ink);color:var(--paper);text-decoration:none;
+  font-weight:600;font-size:clamp(16.5px,1.5vw,18.5px);
+  padding:18px 20px;border-radius:var(--radius);text-align:center;
+  box-shadow:4px 4px 0 var(--lime);
+  transition:transform .18s var(--ease),box-shadow .18s var(--ease);
+}
+.offer-cta .chip{background:var(--lime);color:var(--ink);padding:2px 8px;font-size:.78em;font-weight:700}
+.offer-cta:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--lime)}
+.offer-cta:active{transform:translate(1px,1px);box-shadow:2px 2px 0 var(--lime)}
+.offer-fine{font-size:12.5px;color:var(--dim);margin-top:13px;text-align:center}
+
+/* 8. TICKER --------------------------------------------------------------- */
+.ticker{
+  background:var(--lime);
+  border-top:1.5px solid var(--ink);border-bottom:1.5px solid var(--ink);
+  overflow:hidden;padding:11px 0;white-space:nowrap;
+}
+.ticker-track{display:inline-block;animation:tick 26s linear infinite;will-change:transform}
+.ticker span{
+  font-family:var(--font-serif);font-weight:600;font-size:15px;
+  letter-spacing:.06em;margin-right:34px;
+}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* 9. PAIN ----------------------------------------------------------------- */
+.pain-quote{
+  padding:18px 0;border-top:1px solid var(--rule);
+  font-family:var(--font-serif);font-size:clamp(19px,4.4vw,24px);
+  line-height:1.35;font-style:italic;
+}
+.pain-quote:first-of-type{border-top:none}
+.pain-quote small{
+  display:block;font-family:var(--font-sans);font-style:normal;
+  font-size:13px;color:var(--dim);margin-top:6px;
+}
+.pain .turn{margin-top:30px;font-size:17px;font-weight:600}
+
+/* 10. CATCH --------------------------------------------------------------- */
+.catch-item{padding:20px 0;border-top:1px solid var(--rule)}
+.catch-item:first-of-type{border-top:none}
+.catch-item h3{font-family:var(--font-serif);font-weight:600;font-size:19px;margin-bottom:6px}
+.catch-item p{color:var(--body);font-size:15.5px;max-width:540px}
+.stamp{
+  display:inline-block;background:var(--lime);font-weight:600;font-size:14px;
+  padding:7px 13px;margin-top:26px;transform:rotate(-1deg);
+  border:1px solid var(--ink);
+}
+
+/* 11. PROOF --------------------------------------------------------------- */
+.proof{padding-top:0}
+.proof-box{
+  border:1.5px dashed var(--ink);background:var(--white);
+  padding:24px 22px;max-width:600px;
+}
+.proof-box .honest{font-family:var(--font-serif);font-size:18px;font-weight:600;margin-bottom:6px}
+.proof-box p{font-size:15px;color:var(--body-strong)}
+.proof-box p + p{margin-top:10px}
+.ig-note{font-size:14px;color:var(--body);margin-top:16px;max-width:560px}
+.ig-note a{font-weight:600;text-decoration-thickness:1.5px;text-underline-offset:2px}
+
+/* 12. WHAT YOU GET + HOW IT WORKS ---------------------------------------- */
+.get ul{list-style:none;max-width:620px}
+/* Block, not flex: `<b>label</b> — rest` would otherwise split into two flex
+   items and render as two columns. The arrow is positioned instead. */
+.get li{
+  position:relative;padding:14px 0 14px 27px;
+  border-top:1px solid var(--rule);font-size:17px;
+}
+.get li:first-child{border-top:none}
+.get li::before{content:"→";position:absolute;left:0;top:14px;font-weight:600}
+.get li b{font-weight:600}
+.step{
+  display:flex;gap:18px;padding:18px 0;
+  border-top:1px solid var(--rule);align-items:baseline;
+}
+.step:first-of-type{border-top:none}
+.step .n{font-family:var(--font-serif);font-size:22px;font-weight:600;flex:0 0 34px}
+.step h3{font-size:17px;font-weight:600;margin-bottom:3px}
+.step p{font-size:15px;color:var(--body)}
+.oneday{margin-top:24px;font-family:var(--font-serif);font-size:22px}
+
+/* 13. GROWTH ------------------------------------------------------------- */
+.growth{background:var(--ink);color:var(--paper)}
+.growth .eyebrow{color:#a3a29a}
+.growth h2 .money{color:var(--ink)}
+.growth .gprice{
+  font-family:var(--font-serif);font-size:clamp(40px,9vw,58px);
+  font-weight:600;line-height:1;margin:26px 0;
+}
+.growth .gprice small{
+  font-family:var(--font-sans);font-size:13px;font-weight:500;
+  color:#a3a29a;display:block;margin-top:8px;
+}
+.growth ul{list-style:none}
+/* Same reasoning as .get li — block layout keeps label and description on one
+   continuous run of text. */
+.growth li{
+  position:relative;padding:13px 0 13px 26px;
+  border-top:1px solid #ffffff22;font-size:16px;
+}
+.growth li::before{content:"→";position:absolute;left:0;top:13px;color:var(--lime);font-weight:600}
+.growth li b{font-weight:600}
+.growth .gecom{font-size:12.5px;color:#a3a29a;margin-top:16px}
+.growth .gcta{
+  display:inline-block;background:var(--lime);color:var(--ink);
+  text-decoration:none;font-weight:600;font-size:16px;
+  padding:15px 26px;margin-top:24px;border-radius:var(--radius);
+  box-shadow:4px 4px 0 #ffffff33;
+  transition:transform .18s var(--ease),box-shadow .18s var(--ease);
+}
+.growth .gcta:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 #ffffff33}
+.growth .gcta:active{transform:translate(1px,1px);box-shadow:2px 2px 0 #ffffff33}
+
+/* 14. FAQ ---------------------------------------------------------------- */
+details{border-top:1px solid var(--rule)}
+details:last-of-type{border-bottom:1px solid var(--rule)}
+summary{
+  cursor:pointer;list-style:none;padding:18px 0;
+  font-weight:600;font-size:16.5px;
+  display:flex;justify-content:space-between;gap:16px;align-items:baseline;
+  transition:color .2s ease;
+}
+summary:hover{color:var(--dim)}
+summary::-webkit-details-marker{display:none}
+summary::after{
+  content:"+";font-family:var(--font-serif);font-size:24px;line-height:1;
+  flex:0 0 auto;transition:transform .3s var(--ease);
+}
+details[open] summary::after{transform:rotate(45deg)}
+details p{padding:0 0 20px;font-size:15.5px;color:var(--body);max-width:600px}
+details[open] p{animation:faqIn .4s var(--ease) both}
+@keyframes faqIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+
+/* 15. CLAIM FORM --------------------------------------------------------- */
+.last{padding-bottom:clamp(72px,9vw,104px)}
+.last .slots{
+  font-size:13px;letter-spacing:.14em;text-transform:uppercase;
+  font-weight:600;margin-bottom:16px;
+}
+.last .slots i{font-style:normal;background:var(--lime);padding:2px 8px}
+.last .remind{font-family:var(--font-serif);font-size:clamp(22px,4.6vw,29px);margin-bottom:8px}
+.form-sec .lead{font-size:15.5px;color:var(--body);max-width:560px;margin-bottom:26px}
+.field{margin-bottom:18px;max-width:560px}
+.field label{display:block;font-weight:600;font-size:14px;margin-bottom:7px}
+.field input,.field select{
+  width:100%;padding:14px;font:inherit;font-size:16px;
+  border:1.5px solid var(--ink);background:var(--white);
+  border-radius:var(--radius);color:var(--ink);
+  transition:box-shadow .2s ease,border-color .2s ease;
+}
+.field select{appearance:none;background-image:none}
+.field input:focus,.field select:focus{outline:3px solid var(--lime);outline-offset:0}
+.field .hint{font-size:12.5px;color:var(--dim);margin-top:6px}
+.field .err{display:none;font-size:13px;font-weight:600;color:var(--danger);margin-top:6px}
+.field.invalid input,.field.invalid select{border-color:var(--danger)}
+.field.invalid .err{display:block;animation:shake .3s ease both}
+@keyframes shake{
+  0%,100%{transform:translateX(0)}
+  25%{transform:translateX(-4px)}
+  75%{transform:translateX(4px)}
+}
+.form-btn{
+  width:100%;max-width:560px;background:var(--ink);color:var(--paper);
+  border:none;font:inherit;font-weight:600;font-size:17.5px;
+  padding:18px;border-radius:var(--radius);cursor:pointer;margin-top:6px;
+  box-shadow:4px 4px 0 var(--lime);
+  transition:transform .18s var(--ease),box-shadow .18s var(--ease);
+}
+.form-btn:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--lime)}
+.form-btn:active{transform:translate(1px,1px);box-shadow:2px 2px 0 var(--lime)}
+.form-btn[disabled]{opacity:.6;cursor:progress;transform:none;box-shadow:4px 4px 0 var(--lime)}
+.form-note{font-size:12.5px;color:var(--dim);margin-top:12px;max-width:560px}
+
+/* 15c. SUCCESS PAGE (success.html) --------------------------------------- */
+.page-success{display:flex;flex-direction:column;min-height:100vh;padding-bottom:0}
+.success-main{flex:1 0 auto;display:flex;align-items:center;padding:clamp(40px,6vw,72px) 0}
+
+.success-card{
+  max-width:600px;
+  border:1.6px solid var(--ink);background:var(--white);
+  padding:clamp(26px,3.4vw,40px);
+  box-shadow:10px 10px 0 var(--ink);
+  animation:pop .55s var(--ease) both;
+}
+@keyframes pop{from{opacity:0;transform:scale(.97) translateY(14px)}to{opacity:1;transform:none}}
+
+.success-tick{
+  width:56px;height:56px;margin-bottom:20px;
+  display:grid;place-items:center;
+  background:var(--lime);border:1.5px solid var(--ink);border-radius:50%;
+  font-size:28px;font-weight:700;line-height:1;
+  animation:tickIn .55s var(--ease) .15s both;
+}
+@keyframes tickIn{from{opacity:0;transform:scale(.4) rotate(-25deg)}to{opacity:1;transform:none}}
+
+.success-eyebrow{
+  font-size:11.5px;letter-spacing:.17em;text-transform:uppercase;
+  font-weight:600;color:var(--dim);margin-bottom:8px;
+}
+.success-title{
+  font-family:var(--font-serif);font-weight:600;
+  font-size:clamp(28px,5vw,40px);line-height:1.06;letter-spacing:-.01em;
+  margin-bottom:12px;
+}
+.success-lead{font-size:16px;color:var(--body-strong);max-width:46ch}
+.success-lead a{font-weight:600;text-underline-offset:2px}
+
+.success-reassure{
+  margin-top:22px;background:var(--paper);border:1.5px dashed var(--ink);
+  padding:14px 16px;font-size:13.5px;line-height:1.5;color:var(--body);
+}
+
+.success-steps{
+  list-style:none;counter-reset:step;
+  margin-top:26px;padding-top:22px;border-top:1px solid var(--rule);
+}
+.success-steps li{
+  counter-increment:step;position:relative;
+  padding:11px 0 11px 34px;font-size:15px;color:var(--body);
+}
+.success-steps li::before{
+  content:counter(step);position:absolute;left:0;top:9px;
+  width:23px;height:23px;display:grid;place-items:center;
+  background:var(--lime);border:1px solid var(--ink);border-radius:50%;
+  font-family:var(--font-serif);font-size:12.5px;font-weight:600;color:var(--ink);
+}
+.success-steps li b{color:var(--ink);font-weight:600}
+
+.success-foot{margin-top:26px;padding-top:20px;border-top:1px solid var(--rule)}
+.countdown{font-size:13px;color:var(--dim);min-height:20px}
+.home-btn{
+  display:inline-block;margin-top:10px;
+  background:var(--ink);color:var(--paper);border:none;text-decoration:none;
+  font:inherit;font-weight:600;font-size:15.5px;
+  padding:14px 22px;border-radius:var(--radius);cursor:pointer;
+  transition:transform .18s var(--ease);
+}
+.home-btn:active{transform:translateY(1px)}
+
+@media (max-width:600px){
+  .success-card{box-shadow:6px 6px 0 var(--ink);padding:24px 20px}
+  .home-btn{display:block;text-align:center}
+}
+
+/* 15b. CLAIM MODAL ------------------------------------------------------- */
+/* NOTE: only .modal[open] may set display — a bare `display:flex` here would
+   override the UA's display:none and leave the closed dialog on the page. */
+.modal{
+  /* margin:auto is what centres a modal dialog in the top layer — the `*` reset
+     at the top of this file zeroes it, so it has to be restored here. */
+  margin:auto;
+  width:min(580px,calc(100vw - 32px));
+  max-height:min(88vh,940px);
+  padding:0;border:1.6px solid var(--ink);border-radius:var(--radius);
+  background:var(--paper);color:var(--ink);
+  box-shadow:12px 12px 0 var(--ink);
+  overflow:hidden;
+}
+.modal[open]{display:flex;flex-direction:column;animation:modalIn .34s var(--ease) both}
+.modal::backdrop{background:#11111099}
+.modal[open]::backdrop{animation:backdropIn .3s ease both;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+@keyframes modalIn{from{opacity:0;transform:translateY(20px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes backdropIn{from{opacity:0}to{opacity:1}}
+
+.modal-head{
+  display:flex;justify-content:space-between;align-items:flex-start;gap:16px;
+  padding:22px 24px 18px;border-bottom:1px solid var(--rule);flex:0 0 auto;
+}
+.modal-eyebrow{
+  font-size:11px;letter-spacing:.17em;text-transform:uppercase;
+  font-weight:600;color:var(--dim);margin-bottom:6px;
+}
+.modal-title{
+  font-family:var(--font-serif);font-weight:600;
+  font-size:clamp(22px,3.4vw,27px);line-height:1.1;margin:0;
+}
+.modal-sub{font-size:14px;color:var(--body);margin-top:6px}
+.modal-close{
+  flex:0 0 auto;width:38px;height:38px;display:grid;place-items:center;
+  background:transparent;border:1.5px solid var(--ink);border-radius:var(--radius);
+  font-size:24px;line-height:1;cursor:pointer;color:var(--ink);
+  transition:background-color .18s ease,transform .18s var(--ease);
+}
+.modal-close:hover{background:var(--lime)}
+.modal-close:active{transform:translateY(1px)}
+
+.modal-body{padding:22px 24px 26px;overflow-y:auto;overscroll-behavior:contain}
+/* Inside the modal the form owns the full width. */
+.modal-body .field,
+.modal-body .form-btn,
+.modal-body .form-note{max-width:none}
+
+body.modal-open{overflow:hidden}
+body.modal-open .mobile-cta{transform:translateY(115%)}
+
+/* The button that replaces the inline form once JS moves it into the modal. */
+.open-form-btn{display:block}
+
+/* 16. MOBILE STICKY CTA -------------------------------------------------- */
+.mobile-cta{
+  position:fixed;left:0;right:0;bottom:0;z-index:70;display:none;
+  padding:10px 14px calc(10px + env(safe-area-inset-bottom));
+  background:#F4F2EAF7;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  border-top:1.5px solid var(--ink);
+  transform:translateY(115%);
+  transition:transform .32s var(--ease);
+}
+.mobile-cta.show{transform:none}
+.mobile-cta a{
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  background:var(--ink);color:var(--paper);text-decoration:none;
+  font-weight:600;font-size:16.5px;padding:15px;border-radius:var(--radius);
+}
+.mobile-cta .chip{background:var(--lime);color:var(--ink);padding:2px 8px;font-weight:700}
+
+/* 17. FOOTER ------------------------------------------------------------- */
+.site-footer{border-top:1px solid var(--rule);padding:28px 0 46px;font-size:13px;color:var(--dim)}
+.site-footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;align-items:center}
+.site-footer a{text-decoration:none;font-weight:600;color:var(--ink)}
+.site-footer a:hover{text-decoration:underline}
+
+/* 18. ANIMATION SYSTEM --------------------------------------------------- */
+
+/* Scroll reveals — direction set with data-anim on the element. */
+.rv{
+  opacity:0;
+  transform:translateY(22px);
+  transition:opacity .7s var(--ease-out),transform .7s var(--ease-out);
+  will-change:opacity,transform;
+}
+.rv[data-anim="left"]{transform:translateX(-28px)}
+.rv[data-anim="right"]{transform:translateX(28px)}
+.rv[data-anim="zoom"]{transform:scale(.95)}
+.rv.in{opacity:1;transform:none;will-change:auto}
+
+/* Staggered children — JS assigns --i, CSS turns it into a delay. */
+[data-stagger] > *{
+  opacity:0;transform:translateY(16px);
+  transition:opacity .6s var(--ease-out),transform .6s var(--ease-out);
+  transition-delay:calc(var(--i,0) * 75ms);
+}
+[data-stagger].in > *{opacity:1;transform:none}
+
+/* Hero entrance — pure CSS so it starts on first paint. */
+.hero h1 .line > span{animation:lineUp .95s var(--ease) both}
+.hero h1 .line:nth-child(1) > span{animation-delay:.05s}
+.hero h1 .line:nth-child(2) > span{animation-delay:.16s}
+.hero h1 .line:nth-child(3) > span{animation-delay:.27s}
+@keyframes lineUp{from{transform:translateY(105%)}to{transform:translateY(0)}}
+
+.hero .sub,.hero-points li,.hero .whisper-hero{animation:rise .75s var(--ease) both}
+.hero .sub{animation-delay:.42s}
+.hero-points li:nth-child(1){animation-delay:.5s}
+.hero-points li:nth-child(2){animation-delay:.57s}
+.hero-points li:nth-child(3){animation-delay:.64s}
+.hero .whisper-hero{animation-delay:.72s}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+.offer-card{animation:cardIn 1s var(--ease) .3s both}
+@keyframes cardIn{
+  from{opacity:0;transform:translateY(30px) scale(.97)}
+  to{opacity:1;transform:none}
+}
+.offer-price{animation:pricePop .8s var(--ease) .62s both}
+@keyframes pricePop{
+  from{opacity:0;transform:scale(.72)}
+  60%{opacity:1;transform:scale(1.04)}
+  to{opacity:1;transform:scale(1)}
+}
+.offer-ribbon{animation:ribbonIn .7s var(--ease) .95s both}
+@keyframes ribbonIn{
+  from{opacity:0;transform:rotate(14deg) scale(.7)}
+  to{opacity:1;transform:rotate(3deg) scale(1)}
+}
+/* Keeps the tilt: a plain `rise` would end on transform:none and flatten the
+   tag, since fill-mode both wins over the base rule. */
+.offer-mrp{animation:mrpIn .7s var(--ease) .8s both}
+@keyframes mrpIn{
+  from{opacity:0;transform:translateY(14px) rotate(var(--tilt))}
+  to{opacity:1;transform:rotate(var(--tilt))}
+}
+.offer-cta,.offer-fine{animation:rise .7s var(--ease) both}
+.offer-cta{animation-delay:.9s}
+.offer-fine{animation-delay:.98s}
+
+/* Reduced motion: show everything, animate nothing. */
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{
+    animation-duration:.001ms!important;animation-delay:0ms!important;
+    animation-iteration-count:1!important;transition-duration:.001ms!important;
+  }
+  .rv,[data-stagger] > *{opacity:1!important;transform:none!important}
+  .hl{background-size:100% 100%!important}
+  .ticker-track{animation:none!important}
+}
+
+/* 19. RESPONSIVE --------------------------------------------------------- */
+
+/* Hero stacks: card moves under the copy and goes full width. */
+@media (max-width:940px){
+  :root{--wrap:760px}
+  /* Card moves directly under the title so the price is on the first screen,
+     with the supporting copy after it. */
+  .hero-grid{
+    grid-template-columns:1fr;
+    grid-template-areas:
+      "head"
+      "card"
+      "body";
+    row-gap:26px;
+  }
+  .offer-wrap{justify-content:flex-start}
+  .offer-card{max-width:520px;box-shadow:8px 8px 0 var(--ink)}
+  .hero h1{font-size:clamp(40px,8.6vw,62px)}
+  .hero .sub{max-width:52ch}
+}
+
+@media (max-width:760px){
+  .mobile-cta{display:block}
+  body{padding-bottom:82px}      /* room for the sticky bar */
+  .site-nav .nav-cta{display:none}  /* the bottom bar carries the CTA */
+}
+
+@media (max-width:600px){
+  :root{--gutter:18px}
+  .brand-tag{display:none}
+  .brand-mark{width:38px;height:38px}
+  .brand-name{font-size:16.5px}
+
+  /* Compact hero: title + price card should both land above the fold. */
+  .hero{padding:30px 0 44px}
+  .hero-grid{row-gap:22px}
+  .offer-card{
+    max-width:none;
+    box-shadow:6px 6px 0 var(--ink);
+    padding:22px 18px 20px;
+  }
+  .offer-price-row{gap:10px;margin:4px 0 2px}
+  .offer-price{font-size:clamp(72px,21vw,104px)}
+  .offer-cta{margin-top:18px;padding:16px 18px}
+  .offer-mrp{max-width:160px;font-size:11.5px;padding:8px 10px}
+  .offer-ribbon{right:-6px;top:-13px;font-size:10.5px;padding:5px 9px}
+  .hero-points{gap:9px 18px}
+  .hero-points li{font-size:13.5px}
+  .get li{font-size:16px}
+  .step{gap:14px}
+  .step .n{flex:0 0 26px;font-size:20px}
+  .proof-box{padding:20px 18px}
+
+  /* Modal becomes a bottom sheet: easier to reach, keyboard-friendly. */
+  .modal{
+    width:100%;max-width:none;max-height:94vh;
+    margin:auto auto 0;                 /* pinned to the bottom */
+    border-width:1.6px 0 0;box-shadow:none;
+  }
+  .modal[open]{animation:sheetIn .34s var(--ease) both}
+  @keyframes sheetIn{from{opacity:0;transform:translateY(100%)}to{opacity:1;transform:none}}
+  .modal-head{padding:18px 18px 15px}
+  .modal-body{padding:18px 18px calc(22px + env(safe-area-inset-bottom))}
+}
+
+@media (max-width:380px){
+  .hero h1{font-size:clamp(33px,9.4vw,42px)}
+  .offer-price{font-size:82px}
+  .offer-mrp{--tilt:0deg;max-width:none;width:100%}
+  .stamp{font-size:13px}
+}
+
+/* Coarse pointers: no hover lift, and honour minimum tap targets. */
+@media (hover:none){
+  .nav-cta:hover,.offer-cta:hover,.form-btn:hover,.growth .gcta:hover{
+    transform:none;
+  }
+  .brand:hover .brand-mark{transform:none}
+}
+
+/* Print ------------------------------------------------------------------ */
+@media print{
+  .site-nav,.ticker,.form-btn,.offer-cta,.nav-cta,.gcta,.mobile-cta,.progress{display:none!important}
+  body{background:#fff;padding-bottom:0}
+  .rv,[data-stagger] > *{opacity:1!important;transform:none!important}
+  .offer-card{box-shadow:none}
+}

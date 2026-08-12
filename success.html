@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en-IN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>You're in — X9 CREATIVES</title>
+<meta name="description" content="Your ₹1 slot request is in. We'll be in touch shortly.">
+<!-- A thank-you page must never be indexed or shown in search results. -->
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#F4F2EA">
+
+<link rel="icon" href="assets/img/x9-logo.png" sizes="512x512" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/x9-logo.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,400&amp;family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body class="page-success">
+
+<header class="site-nav">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="X9 CREATIVES — home">
+      <img class="brand-mark" src="assets/img/x9-logo.png" width="512" height="512"
+           alt="" fetchpriority="high" decoding="async">
+      <span class="brand-text">
+        <span class="brand-name">X9 <em>CREATIVES</em></span>
+        <span class="brand-tag">Strategy · Creative · Growth</span>
+      </span>
+    </a>
+  </div>
+</header>
+
+<main class="success-main">
+  <div class="wrap">
+    <div class="success-card">
+      <p class="success-tick" aria-hidden="true">✓</p>
+
+      <p class="success-eyebrow">Slot request received</p>
+      <h1 class="success-title" id="successTitle">You're in the queue.</h1>
+
+      <!-- The name is filled in by success.js; this copy stands on a direct visit. -->
+      <p class="success-lead" id="successLead">
+        Your answers are with us. Nothing more to do right now —
+        <b>we'll get in touch on the number you gave us</b>, usually within a day.
+      </p>
+
+      <ol class="success-steps">
+        <li><b>We read your answers</b> — and check the ₹1 offer fits what you need</li>
+        <li><b>We reach out with a call slot</b> — 10 minutes, everything explained</li>
+        <li><b>Lock your content, pay ₹1</b> — your site is live the next day</li>
+      </ol>
+
+      <p class="success-reassure">
+        No payment now. The ₹1 happens only on the call, after everything is
+        explained — and the full first-year figure is ₹2,501 including your domain
+        and hosting, exactly as written on the page.
+      </p>
+
+      <div class="success-foot">
+        <p class="countdown" id="successCountdown"></p>
+        <a class="home-btn" href="/">Back to the page →</a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div>Built by <b>X9 CREATIVES</b> · <span id="year">2026</span></div>
+    <div>₹1 offer · terms as written on the main page</div>
+  </div>
+</footer>
+
+<!--
+  main.js is loaded here for one reason: its flushQueue() confirms/retries the
+  lead write that was still in flight when this page took over. Submitting
+  navigates away, so the landing page can never run that confirmation itself.
+  Every other thing main.js does is guarded on elements that only exist on the
+  landing page, so it no-ops here.
+-->
+<script src="assets/js/main.js" defer></script>
+<script src="assets/js/success.js" defer></script>
+</body>
+</html>
