@@ -1,29 +1,29 @@
 /**
  * ===========================================================================
- * X9 CREATIVES — ₹1 landing page  →  Google Sheet
+ * X9 CREATIVES — landing page  →  Google Sheet
  * ===========================================================================
  *
- * HOW TO INSTALL  (do these in order)
+ * HOW TO INSTALL / UPDATE  (do these in order)
  *
  *  1. Open your Google Sheet.
  *  2. Extensions  →  Apps Script.
  *  3. Select EVERYTHING already in the editor and delete it.
  *  4. Paste this whole file.
  *  5. Ctrl+S to save.
- *  6. In the toolbar function dropdown pick  testWrite  and press  ▶ Run.
- *       - Accept the authorisation prompt (Advanced → Go to … (unsafe)).
- *       - A row should appear in the "Leads" tab. Delete it afterwards.
- *       - If this works, the code is definitely in the right project.
- *  7. Deploy  →  New deployment  →  gear ⚙️  →  Web app
+ *  6. Function dropdown → testWrite → ▶ Run  (accept the auth prompt).
+ *       Two rows appear in "Leads": one Rs.1 and one Growth Site. Delete them.
+ *  7. Deploy → New deployment → gear ⚙️ → Web app
  *       Execute as:      Me
  *       Who has access:  Anyone          ← must be "Anyone"
- *  8. Deploy, then copy the /exec URL.
+ *  8. Deploy, then copy the /exec URL into CONFIG.sheetEndpoint in main.js.
+ *
+ *  Saving alone never changes what the live URL serves — you must deploy.
  *
  * ===========================================================================
  */
 
-/** Bumped whenever this file changes, so a deployment's freshness is checkable. */
-var BUILD = '2026-08-12-v2';
+/** Bumped on every change, so a deployment's freshness is checkable via doGet. */
+var BUILD = '2026-08-12-v3';
 
 /** Tab the leads go into. Created automatically. */
 var SHEET_NAME = 'Leads';
@@ -31,8 +31,14 @@ var SHEET_NAME = 'Leads';
 /** Must match CONFIG.sheetToken in assets/js/main.js. */
 var SHARED_TOKEN = 'x9-change-this-token';
 
+/**
+ * Column order used when the tab is first created. Rows are written BY HEADER
+ * NAME, not by position, so you can safely reorder or hide columns in Sheets
+ * afterwards, and any header added here later is appended automatically.
+ */
 var HEADERS = [
   'Received at',
+  'Interest',
   'Name',
   'Business',
   'What they sell',
@@ -44,19 +50,33 @@ var HEADERS = [
   'Submission ID'
 ];
 
-var PHONE_COL = 5;  // 1-indexed positions in HEADERS
-var ID_COL = 10;
+var ID_HEADER = 'Submission ID';
+var PHONE_HEADER = 'WhatsApp';
+
+/** How each column gets its value from the posted payload. */
+function valueFor_(header, data) {
+  switch (header) {
+    case 'Received at': return new Date();
+    case 'Interest': return str_(data.interest) || 'Rs.1 Website';
+    case 'Name': return str_(data.name);
+    case 'Business': return str_(data.business);
+    case 'What they sell': return str_(data.what);
+    case 'WhatsApp': return str_(data.phone);
+    case 'Content ready': return str_(data.content);
+    case 'Paid for marketing before': return str_(data.paid);
+    case 'Source': return str_(data.source);
+    case 'Page': return str_(data.page);
+    case 'Submission ID': return str_(data.id);
+    default: return '';           // a column you added yourself — left alone
+  }
+}
 
 
 /* -------------------------------------------------------------------------
    Web endpoints
    ------------------------------------------------------------------------- */
 
-/**
- * Opening the /exec URL in a browser hits this. Should show JSON.
- * If you see "Script function not found: doGet", the deployment is serving an
- * older version of the code — deploy again (step 7).
- */
+/** Opening the /exec URL in a browser hits this. Should show JSON. */
 function doGet() {
   return reply_({
     ok: true,
@@ -87,8 +107,7 @@ function doPost(e) {
       return reply_({ ok: false, error: 'bad token' });
     }
 
-    var result = appendLead_(data);
-    return reply_(result);
+    return reply_(appendLead_(data));
 
   } catch (err) {
     return reply_({ ok: false, error: String(err) });
@@ -105,55 +124,92 @@ function doPost(e) {
 /** Appends one lead. Skips it if that submission id is already recorded. */
 function appendLead_(data) {
   var sheet = getSheet_();
+  var headers = ensureHeaders_(sheet);
 
-  if (data.id && findId_(sheet, data.id)) {
+  if (data.id && findId_(sheet, headers, data.id)) {
     return { ok: true, duplicate: true, build: BUILD };
   }
 
-  sheet.appendRow([
-    new Date(),
-    str_(data.name),
-    str_(data.business),
-    str_(data.what),
-    str_(data.phone),
-    str_(data.content),
-    str_(data.paid),
-    str_(data.source),
-    str_(data.page),
-    str_(data.id)
-  ]);
+  var row = headers.map(function (header) { return valueFor_(header, data); });
+  sheet.appendRow(row);
 
-  return { ok: true, row: sheet.getLastRow(), build: BUILD };
+  return {
+    ok: true,
+    row: sheet.getLastRow(),
+    interest: valueFor_('Interest', data),
+    build: BUILD
+  };
 }
 
-/** Returns the Leads tab, creating and formatting it on first use. */
+/** Returns the Leads tab, creating it on first use. */
 function getSheet_() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   if (!ss) {
     throw new Error('No active spreadsheet. Open the Sheet and use Extensions > Apps Script.');
   }
-
   var sheet = ss.getSheetByName(SHEET_NAME);
   if (!sheet) sheet = ss.insertSheet(SHEET_NAME);
+  return sheet;
+}
 
+/**
+ * Returns the sheet's header row, creating it if the tab is new and appending
+ * any header this script needs but the sheet does not have yet. Existing
+ * columns are never moved, so data already in the sheet stays aligned.
+ */
+function ensureHeaders_(sheet) {
   if (sheet.getLastRow() === 0) {
     sheet.appendRow(HEADERS);
     sheet.getRange(1, 1, 1, HEADERS.length).setFontWeight('bold');
     sheet.setFrozenRows(1);
     sheet.setColumnWidth(1, 150);
-    // Plain text, or Sheets reads a 10-digit mobile as a number.
-    sheet.getRange(2, PHONE_COL, sheet.getMaxRows() - 1, 1).setNumberFormat('@');
+    formatPhoneColumn_(sheet, HEADERS);
+    return HEADERS.slice();
   }
 
-  return sheet;
+  var width = Math.max(sheet.getLastColumn(), 1);
+  var headers = sheet.getRange(1, 1, 1, width).getValues()[0].map(function (h) {
+    return String(h).trim();
+  });
+
+  // Drop trailing blanks so appended columns land tight against the data.
+  while (headers.length && headers[headers.length - 1] === '') headers.pop();
+
+  var added = false;
+  HEADERS.forEach(function (header) {
+    if (headers.indexOf(header) === -1) {
+      headers.push(header);
+      added = true;
+    }
+  });
+
+  if (added) {
+    sheet.getRange(1, 1, 1, headers.length)
+      .setValues([headers])
+      .setFontWeight('bold');
+    formatPhoneColumn_(sheet, headers);
+  }
+
+  return headers;
+}
+
+/** Plain text, or Sheets reads a 10-digit mobile as a number. */
+function formatPhoneColumn_(sheet, headers) {
+  var col = headers.indexOf(PHONE_HEADER) + 1;
+  if (col < 1) return;
+  var rows = sheet.getMaxRows() - 1;
+  if (rows > 0) sheet.getRange(2, col, rows, 1).setNumberFormat('@');
 }
 
 /** True if this submission id is already in the sheet. */
-function findId_(sheet, id) {
+function findId_(sheet, headers, id) {
+  var col = headers.indexOf(ID_HEADER) + 1;
+  if (col < 1) return false;
+
   var lastRow = sheet.getLastRow();
   if (lastRow < 2) return false;
 
-  var ids = sheet.getRange(2, ID_COL, lastRow - 1, 1).getValues();
+  var ids = sheet.getRange(2, col, lastRow - 1, 1).getValues();
   for (var i = 0; i < ids.length; i++) {
     if (String(ids[i][0]) === String(id)) return true;
   }
@@ -175,13 +231,13 @@ function reply_(obj) {
    Run this from the editor to prove the code + permissions work
    ------------------------------------------------------------------------- */
 
-/**
- * Select "testWrite" in the toolbar dropdown and press Run.
- * Writes one obvious test row. Check View → Logs for the result.
- */
+/** Writes one row of each type. Check View → Logs, then delete the rows. */
 function testWrite() {
-  var result = appendLead_({
-    id: 'editor-test-' + new Date().getTime(),
+  var stamp = new Date().getTime();
+
+  var a = appendLead_({
+    id: 'editor-test-a-' + stamp,
+    interest: 'Rs.1 Website',
     name: 'X9 Setup Test',
     business: 'DELETE THIS ROW',
     what: 'editor test',
@@ -192,8 +248,22 @@ function testWrite() {
     page: 'testWrite()'
   });
 
+  var b = appendLead_({
+    id: 'editor-test-b-' + stamp,
+    interest: 'Growth Site',
+    name: 'X9 Setup Test',
+    business: 'DELETE THIS ROW',
+    what: 'editor test',
+    phone: '9000000001',
+    content: 'Half ready',
+    paid: 'Yes',
+    source: 'apps-script-editor',
+    page: 'testWrite()'
+  });
+
   Logger.log('build: %s', BUILD);
-  Logger.log('result: %s', JSON.stringify(result));
-  Logger.log('If you see a row in the "%s" tab, everything works. Delete it.', SHEET_NAME);
-  return result;
+  Logger.log('Rs.1 row     : %s', JSON.stringify(a));
+  Logger.log('Growth row   : %s', JSON.stringify(b));
+  Logger.log('Two rows should be in "%s" — delete them.', SHEET_NAME);
+  return [a, b];
 }

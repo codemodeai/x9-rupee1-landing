@@ -227,7 +227,7 @@
 
   // Content-Type text/plain keeps this a CORS "simple request" — Apps Script
   // cannot answer a preflight OPTIONS, so anything else would be blocked.
-  function postToSheet(payload) {
+  function postOnce(payload) {
     if (!CONFIG.sheetEndpoint) return Promise.resolve('skipped');
     return window.fetch(CONFIG.sheetEndpoint, {
       method: 'POST',
@@ -249,6 +249,24 @@
       if (!body || body.ok !== true) throw new Error(body && body.error ? body.error : 'endpoint rejected the write');
       return body;
     });
+  }
+
+  // Apps Script web apps intermittently answer with an HTML error page instead
+  // of running the script (observed roughly 1 request in 3 under rapid calls).
+  // Retrying with a short backoff turns that into a non-event; the script
+  // dedupes on submission id, so a retry can never double-record a lead.
+  var SHEET_ATTEMPTS = 3;
+
+  function postToSheet(payload) {
+    function attempt(n) {
+      return postOnce(payload)['catch'](function (err) {
+        if (n >= SHEET_ATTEMPTS) throw err;
+        return new Promise(function (resolve) {
+          window.setTimeout(resolve, 1200 * n);
+        }).then(function () { return attempt(n + 1); });
+      });
+    }
+    return attempt(1);
   }
 
   function logToSheet(payload) {
@@ -351,6 +369,50 @@
   var formHost = $('#claimFormHost');
   var canModal = !!(modal && modalBody && form && typeof modal.showModal === 'function');
 
+  /* --- Form variants ----------------------------------------------------
+     One form, two contexts. A CTA carrying data-variant="growth" opens it with
+     Growth Site wording; everything else gets the ₹1 default. `interest` is
+     what lands in the sheet, so leads are separable at a glance.
+     The HTML holds the ₹1 copy so the no-JS inline form still reads correctly.
+     -------------------------------------------------------------------- */
+  var VARIANTS = {
+    rupee: {
+      interest: '₹1 Website',
+      eyebrow: 'Batch 1 · limited slots',
+      title: 'Claim your ₹1 slot',
+      sub: 'One minute, six answers. No payment now.',
+      submit: 'Claim my slot →',
+      note: 'Your answers come straight to us — that\'s your slot request in. No payment now. The ₹1 happens only on the call, after everything is explained.'
+    },
+    growth: {
+      interest: 'Growth Site',
+      eyebrow: 'Growth Site · ₹10–20K',
+      title: 'Ask about the Growth Site',
+      sub: 'One minute, six answers. We\'ll come back with an exact quote.',
+      submit: 'Ask about the Growth Site →',
+      note: 'Your answers come straight to us. Nothing to pay and nothing fixed yet — the exact quote depends on what your business needs, and we work that out on a 10-minute call.'
+    }
+  };
+
+  var variant = 'rupee';
+
+  function applyVariant(name) {
+    variant = VARIANTS[name] ? name : 'rupee';
+    var v = VARIANTS[variant];
+
+    var eyebrow = $('#modalEyebrow');
+    var title = $('#modalTitle');
+    var sub = $('#modalSub');
+    if (eyebrow) eyebrow.textContent = v.eyebrow;
+    if (title) title.textContent = v.title;
+    if (sub) sub.textContent = v.sub;
+
+    var submitBtn = form && $('.form-btn', form);
+    if (submitBtn) submitBtn.textContent = v.submit;
+    var note = form && $('.form-note', form);
+    if (note) note.textContent = v.note;
+  }
+
   /* --- Draft autofill: remember what they typed, prefill next time ------ */
   var DRAFT_KEY = 'x9-claim-draft';
 
@@ -388,12 +450,14 @@
     if (!form) return;
     form.style.display = '';
     var btn = $('.form-btn', form);
-    if (btn) { btn.disabled = false; btn.textContent = 'Claim my slot →'; }
+    // Label follows whichever variant is open, not a hardcoded string.
+    if (btn) { btn.disabled = false; btn.textContent = VARIANTS[variant].submit; }
     $$('input, select', form).forEach(function (el) { setFieldError(el, ''); });
   }
 
-  function openModal() {
+  function openModal(variantName) {
     if (!canModal) return false;
+    applyVariant(variantName);
     resetFormState();
     restoreDraft();
     modal.showModal();
@@ -426,10 +490,11 @@
     }
 
     // Every CTA on the page opens the modal instead of jumping to the section.
+    // data-variant picks the wording; without it, the ₹1 default applies.
     $$('a[href="#claim"]').forEach(function (a) {
       a.addEventListener('click', function (e) {
         e.preventDefault();
-        openModal();
+        openModal(a.getAttribute('data-variant'));
       });
     });
 
@@ -476,6 +541,7 @@
       logToSheet({
         token: CONFIG.sheetToken,
         id: Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8),
+        interest: VARIANTS[variant].interest,   // "₹1 Website" or "Growth Site"
         name: f.name.value.trim(),
         business: f.business.value.trim(),
         what: f.what.value.trim(),

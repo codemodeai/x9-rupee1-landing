@@ -228,7 +228,8 @@
         <li><b>Hosted &amp; maintained by us</b> — you run the business, we run the site</li>
       </ul>
       <p class="gecom">Selling products online? E-commerce stores from ₹30K.</p>
-      <a class="gcta" href="#claim">Ask about it on the call →</a>
+      <!-- Same form, Growth Site wording, and recorded as a Growth Site lead. -->
+      <a class="gcta" href="#claim" data-variant="growth">Ask about it on the call →</a>
     </div>
   </section>
 
@@ -355,9 +356,11 @@
 <dialog class="modal" id="claimModal" aria-labelledby="modalTitle">
   <div class="modal-head">
     <div>
-      <p class="modal-eyebrow">Batch 1 · limited slots</p>
+      <!-- Copy here is the ₹1 default; main.js swaps it for the Growth Site
+           variant when the form is opened from the Growth Site button. -->
+      <p class="modal-eyebrow" id="modalEyebrow">Batch 1 · limited slots</p>
       <h2 class="modal-title" id="modalTitle">Claim your ₹1 slot</h2>
-      <p class="modal-sub">One minute, six answers. No payment now.</p>
+      <p class="modal-sub" id="modalSub">One minute, six answers. No payment now.</p>
     </div>
     <button class="modal-close" type="button" id="modalClose" aria-label="Close the form">
       <span aria-hidden="true">×</span>
