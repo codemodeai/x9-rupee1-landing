@@ -251,10 +251,12 @@
     });
   }
 
-  // Apps Script web apps intermittently answer with an HTML error page instead
-  // of running the script (observed roughly 1 request in 3 under rapid calls).
-  // Retrying with a short backoff turns that into a non-event; the script
-  // dedupes on submission id, so a retry can never double-record a lead.
+  // Under bursts of requests Apps Script answers with an HTML error page — but
+  // measured behaviour is that it STILL RUNS the script and writes the row; only
+  // the response is lost. So a "failure" here often means the lead is already
+  // saved, which is exactly why the script dedupes on submission id: without it
+  // these retries would each add a duplicate row. Spaced-out real traffic does
+  // not trigger it; the retries cover genuine transient failures.
   var SHEET_ATTEMPTS = 3;
 
   function postToSheet(payload) {

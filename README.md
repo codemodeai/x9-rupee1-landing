@@ -186,9 +186,13 @@ lead or show the visitor an error.
   that in-flight write. The landing page can't do it — it's already gone. Every
   other part of `main.js` is guarded on landing-page elements and no-ops there.
 - Every submission carries a unique `id`, and the script skips an `id` it has
-  already recorded. This matters precisely because a request can reach Apps Script,
-  append the row, and *then* fail on the response — without the check, the retry
-  would duplicate the lead.
+  already recorded. This is not defensive theory — it was measured. Under bursts of
+  requests Apps Script returns an HTML error page **while still running the script
+  and writing the row**; only the response is lost. Reposting the same id then
+  answers `duplicate: true`, proving the row was already there. Without the id
+  check, every retry after one of those phantom failures would add a duplicate
+  lead. It also means a `[X9] Sheet write failed` warning in the console often
+  means the lead *did* save — check the sheet before assuming a loss.
 - The POST uses `Content-Type: text/plain` on purpose. That keeps it a CORS
   "simple request"; Apps Script cannot answer a preflight `OPTIONS`, so any other
   content type gets blocked by the browser.
