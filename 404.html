@@ -22,6 +22,24 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
   gtag('config', 'G-1NNR9J5T2N');
 </script>
+<!-- Meta Pixel. Pixel ID 1003276642477276. Fires PageView so 404 traffic is not a blind spot.
+     Meta asks for the base code inside <head> so an ad blocker or a slow
+     third-party script has less chance to stop it firing. The <noscript>
+     fallback that pairs with this lives at the top of <body> — see there. -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1003276642477276');
+fbq('track', 'PageView');
+</script>
+<!-- End Meta Pixel -->
+
 <title>Page not found — X9 CREATIVES</title>
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#F4F2EA">
@@ -40,6 +58,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N6DSKJFH"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
+
+<!-- Meta Pixel (noscript). Deliberately here and not in <head>: the HTML spec
+     only allows link/style/meta inside a <noscript> in the head, so an <img>
+     there is invalid and the parser moves it into the body regardless. -->
+<noscript><img height="1" width="1" style="display:none" alt=""
+src="https://www.facebook.com/tr?id=1003276642477276&amp;ev=PageView&amp;noscript=1"></noscript>
+<!-- End Meta Pixel (noscript) -->
 
 <header class="site-nav">
   <div class="wrap">
