@@ -32,6 +32,35 @@
 
   var fresh = !!(data && data.at && (Date.now() - data.at) < HANDOFF_MAX_AGE);
 
+  /* --- Conversion events ------------------------------------------------
+     Gated on `fresh`, which is the whole point of the one-shot handoff above:
+     the key is already removed, so a reload, a direct visit, or a return trip
+     through the countdown all leave `fresh` false and fire nothing. Counting
+     those would inflate the conversion rate and teach the ad platforms to
+     optimise toward people who refresh a page.
+     Both tags are hardcoded here for the same reason the base snippets are —
+     one delivery path each, never also configured inside GTM.
+     ---------------------------------------------------------------------- */
+  if (fresh) {
+    var interest = data.interest || 'Unknown';
+
+    // Meta. No value: the lead is worth far more than the ₹1 entry price and
+    // a made-up number would skew Meta's bidding.
+    try {
+      if (typeof window.fbq === 'function') {
+        window.fbq('track', 'Lead', { content_category: interest });
+      }
+    } catch (e) { /* blocked or missing — never break the page for a tag */ }
+
+    // GA4. `generate_lead` is the recommended event name; mark it a
+    // conversion in GA4 → Admin → Events for it to count.
+    try {
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'generate_lead', { lead_type: interest });
+      }
+    } catch (e) { /* same */ }
+  }
+
   if (fresh && data.firstName) {
     var title = $('#successTitle');
     if (title) title.textContent = "You're in, " + data.firstName + '.';

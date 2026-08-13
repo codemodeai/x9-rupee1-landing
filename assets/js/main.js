@@ -563,6 +563,7 @@
       try {
         window.sessionStorage.setItem(SUCCESS_KEY, JSON.stringify({
           firstName: f.name.value.trim().split(/\s+/)[0],
+          interest: VARIANTS[variant].interest,   // which offer converted
           at: Date.now()
         }));
       } catch (e) { /* private mode — the page copes without it */ }
